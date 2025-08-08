@@ -44,7 +44,7 @@ const Hero = () => {
             animate="visible"
             variants={containerVariant}
         >
-            <div className="relative text-white h-[60vh] md:h-[500px] lg:h-[550px] xl:h-[600px] w-full overflow-hidden">
+            <div className="relative text-white h-[40vh] sm:h-[45vh] md:h-[500px] lg:h-[550px] xl:h-[600px] w-full overflow-hidden">
                 {/* Background Video */}
                 <video 
                     className="absolute inset-0 w-full h-full object-cover"
