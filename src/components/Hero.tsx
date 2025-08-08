@@ -47,10 +47,13 @@ const Hero = () => {
             <div className="relative text-white h-[40vh] sm:h-[45vh] md:h-[500px] lg:h-[550px] xl:h-[600px] w-full overflow-hidden">
                 {/* Background Video */}
                 <video 
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover pointer-events-none"
                     autoPlay 
                     loop 
                     muted
+                    playsInline
+                    webkit-playsinline="true"
+                    controls={false}
                 >
                     <source src="/asset/library.mp4" type="video/mp4" />
                 </video>
