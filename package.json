@@ -9,6 +9,12 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "overrides": {
+    "react-helmet-async": {
+      "react": "$react",
+      "react-dom": "$react-dom"
+    }
+  },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@radix-ui/react-aspect-ratio": "^1.1.7",
