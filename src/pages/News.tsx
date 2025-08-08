@@ -4,37 +4,49 @@ const News = () => {
       date: "2024-08-08",
       title: "蓝博科技发布新一代智能图书管理系统",
       summary: "集成最新AI技术，实现更智能的图书推荐和管理功能",
-      category: "产品发布"
+      category: "产品发布",
+      image: "💻",
+      bgColor: "from-blue-200 to-purple-200"
     },
     {
       date: "2024-08-05",
       title: "与清华大学图书馆达成战略合作",
       summary: "将为清华大学图书馆提供全面的智能化升级服务",
-      category: "合作新闻"
+      category: "合作新闻",
+      image: "🤝",
+      bgColor: "from-green-200 to-blue-200"
     },
     {
       date: "2024-08-01",
       title: "人脸识别借书系统正式上线",
       summary: "革命性的借书体验，无需借书证即可完成借阅",
-      category: "技术创新"
+      category: "技术创新",
+      image: "👤",
+      bgColor: "from-purple-200 to-pink-200"
     },
     {
       date: "2024-07-28",
       title: "获得国家高新技术企业认证",
       summary: "公司技术实力获得权威认可，将继续加大研发投入",
-      category: "公司动态"
+      category: "公司动态",
+      image: "🏆",
+      bgColor: "from-yellow-200 to-orange-200"
     },
     {
       date: "2024-07-25",
       title: "智能图书推荐算法优化升级",
       summary: "基于用户行为分析的个性化推荐准确率提升30%",
-      category: "技术创新"
+      category: "技术创新",
+      image: "🧠",
+      bgColor: "from-indigo-200 to-blue-200"
     },
     {
       date: "2024-07-20",
       title: "参加中国图书馆学会年会",
       summary: "展示最新智能图书馆解决方案，获得业界广泛关注",
-      category: "行业活动"
+      category: "行业活动",
+      image: "🎯",
+      bgColor: "from-teal-200 to-green-200"
     }
   ];
 
@@ -47,9 +59,9 @@ const News = () => {
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {newsItems.map((item, index) => (
-            <article key={index} className="bg-gray-50 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-              <div className="h-48 bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center">
-                <span className="text-white text-6xl">📰</span>
+            <article key={index} className="bg-blue-50 rounded-lg overflow-hidden shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 ease-in-out transform">
+              <div className={`h-48 bg-gradient-to-br ${item.bgColor} flex items-center justify-center transition-all duration-300`}>
+                <span className="text-white text-6xl transition-transform duration-300 hover:scale-110">{item.image}</span>
               </div>
               <div className="p-6">
                 <div className="flex items-center justify-between mb-3">

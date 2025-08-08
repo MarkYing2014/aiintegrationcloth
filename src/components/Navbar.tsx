@@ -99,10 +99,10 @@ const Navbar = () => {
           <div className="flex-shrink-0">
             <Link
               to="/"
-              className="flex items-center space-x-3 text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors"
+              className="flex items-center space-x-3 text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors whitespace-nowrap"
             >
               <img src={logoIcon} alt="Logo" className={cn("w-12 h-12 object-contain", isScrolled ? "w-10 h-10" : "w-12 h-12")} />
-              <span>蓝博科技</span>
+              <span className="whitespace-nowrap">蓝博科技</span>
             </Link>
           </div>
 

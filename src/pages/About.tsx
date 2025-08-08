@@ -18,8 +18,20 @@ const About = () => {
               已为全国数百家图书馆提供了专业的智能化管理服务。
             </p>
           </div>
-          <div className="bg-blue-100 h-96 rounded-lg flex items-center justify-center">
-            <p className="text-gray-500">公司形象图片</p>
+          <div 
+            className="h-96 rounded-lg bg-gray-100"
+            style={{
+              backgroundImage: 'url(/asset/lbpicture.jpeg)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat'
+            }}
+            title="蓝博科技公司形象"
+          >
+            {/* Fallback content if background image doesn't load */}
+            <div className="w-full h-full flex items-center justify-center text-gray-500">
+              <span>蓝博科技</span>
+            </div>
           </div>
         </div>
 
