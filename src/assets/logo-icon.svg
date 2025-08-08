@@ -1,0 +1,12 @@
+<svg width="32" height="32" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g transform="rotate(45, 256, 256)">
+    <path d="M140 70c-15 0-28 13-28 28v100l50 20V100h100l20-50H140z" fill="#038C7F"/>
+    <circle cx="140" cy="70" r="24" fill="#038C7F"/>
+    <path d="M372 70c15 0 28 13 28 28v100l-50 20V100H250l-20-50h142z" fill="#0433FF"/>
+    <circle cx="372" cy="70" r="24" fill="#0433FF"/>
+    <path d="M140 442c-15 0-28-13-28-28V314l50-20v110h100l20 50H140z" fill="#0433FF"/>
+    <circle cx="140" cy="442" r="24" fill="#0433FF"/>
+    <path d="M372 442c15 0 28-13 28-28V314l-50-20v110H250l-20 50h142z" fill="#038C7F"/>
+    <circle cx="372" cy="442" r="24" fill="#038C7F"/>
+  </g>
+</svg>
