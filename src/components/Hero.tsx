@@ -17,20 +17,34 @@ const Hero = () => {
 
         const video = videoRef.current;
         if (video) {
-            // Add event listeners
-            const handleLoadedData = () => {
-                setVideoLoaded(true);
-            };
+            // Set video as loaded immediately to prioritize video
+            setVideoLoaded(true);
 
+            // Add event listeners
             const handleCanPlay = () => {
-                // Try to play the video
+                // Aggressively try to play the video
                 const playPromise = video.play();
                 if (playPromise !== undefined) {
-                    playPromise.catch(() => {
-                        console.log('Video autoplay prevented');
+                    playPromise.then(() => {
+                        console.log('Video playing successfully');
+                    }).catch((error) => {
+                        console.log('Video autoplay prevented:', error);
+                        // Try again after a short delay
+                        setTimeout(() => {
+                            video.play().catch(() => {
+                                console.log('Second attempt failed');
+                            });
+                        }, 100);
                     });
                 }
             };
+
+            const handleLoadedData = () => {
+                handleCanPlay();
+            };
+
+            // Try to play immediately
+            handleCanPlay();
 
             video.addEventListener('loadeddata', handleLoadedData);
             video.addEventListener('canplay', handleCanPlay);
@@ -85,20 +99,10 @@ const Hero = () => {
             variants={containerVariant}
         >
             <div className="relative text-white h-[40vh] sm:h-[45vh] md:h-[500px] lg:h-[550px] xl:h-[600px] w-full overflow-hidden">
-                {/* Fallback Background Image for Mobile */}
-                {isMobile && !videoLoaded && (
-                    <div 
-                        className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
-                        style={{
-                            backgroundImage: "linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/asset/lbpicture.jpeg')"
-                        }}
-                    />
-                )}
-                
                 {/* Background Video */}
                 <video 
                     ref={videoRef}
-                    className={`absolute inset-0 w-full h-full object-cover pointer-events-none ${isMobile && !videoLoaded ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}
+                    className="absolute inset-0 w-full h-full object-cover pointer-events-none"
                     autoPlay 
                     loop 
                     muted
@@ -106,7 +110,6 @@ const Hero = () => {
                     webkit-playsinline="true"
                     controls={false}
                     preload="auto"
-                    poster="/asset/lbpicture.jpeg"
                 >
                     <source src="/asset/library.mp4" type="video/mp4" />
                 </video>
