@@ -1,4 +1,5 @@
 import Hero from '../components/Hero';
+import { Cpu } from 'lucide-react';
 
 const Home = () => {
   return (
@@ -85,48 +86,62 @@ const Home = () => {
                 title: "智能借阅系统",
                 description: "基于AI技术的智能借阅管理系统，支持人脸识别、自动借还书等功能",
                 features: ["人脸识别借书", "自动归还提醒", "智能推荐"],
-                icon: "🤖",
-                bgColor: "from-blue-100 to-cyan-100"
+                icon: <Cpu className="w-5 h-5 md:w-6 md:h-6" />,
+                bgColor: "from-blue-100 to-cyan-100",
+                image: "/asset/borrowAI.jpeg"
               },
               {
-                title: "图书管理平台",
+                title: "智能图书管理平台",
                 description: "全面的图书馆管理平台，包含图书采购、编目、流通等全流程管理",
                 features: ["图书编目", "库存管理", "数据分析"],
                 icon: "📚",
-                bgColor: "from-green-100 to-emerald-100"
+                bgColor: "from-green-100 to-emerald-100",
+                image: "/asset/library.jpeg"
               },
               {
-                title: "校园一卡通集成",
+                title: "智能校园一卡通集成",
                 description: "与校园一卡通系统无缝集成，实现统一身份认证和消费管理",
                 features: ["身份认证", "消费记录", "权限管理"],
-                icon: "💳",
-                bgColor: "from-purple-100 to-violet-100"
+                icon: <Cpu className="w-5 h-5 md:w-6 md:h-6" />,
+                bgColor: "from-purple-100 to-violet-100",
+                image: "/asset/oneCard.jpeg"
               },
               {
-                title: "移动端应用",
+                title: "智能移动端应用",
                 description: "支持iOS和Android的移动应用，方便用户随时查询和预约图书",
                 features: ["在线预约", "续借服务", "消息推送"],
                 icon: "📱",
-                bgColor: "from-pink-100 to-rose-100"
+                bgColor: "from-pink-100 to-rose-100",
+                image: "/asset/mobile.jpeg"
               },
               {
-                title: "数据分析系统",
+                title: "智能数据分析系统",
                 description: "强大的数据分析功能，为图书馆决策提供科学依据",
                 features: ["借阅统计", "用户画像", "趋势分析"],
                 icon: "📊",
-                bgColor: "from-indigo-100 to-blue-100"
+                bgColor: "from-indigo-100 to-blue-100",
+                image: "/asset/data.jpeg"
               },
               {
-                title: "云端备份服务",
+                title: "智能云端备份服务",
                 description: "安全可靠的云端数据备份服务，确保数据安全和业务连续性",
                 features: ["自动备份", "灾难恢复", "数据同步"],
                 icon: "☁️",
-                bgColor: "from-teal-100 to-cyan-100"
+                bgColor: "from-teal-100 to-cyan-100",
+                image: "/asset/cloud.jpeg"
               }
             ].map((product, index) => (
               <div key={index} className="bg-blue-50 rounded-lg shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out transform">
-                <div className={`h-48 bg-gradient-to-br ${product.bgColor} flex items-center justify-center transition-all duration-300`}>
-                  <span className="text-white text-6xl transition-transform duration-300 hover:scale-110">{product.icon}</span>
+                <div className={`h-48 bg-gradient-to-br ${product.bgColor} flex items-center justify-center transition-all duration-300 relative overflow-hidden`}>
+                  {product.image ? (
+                    <img 
+                      src={product.image} 
+                      alt={product.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-white text-6xl transition-transform duration-300 hover:scale-110">{product.icon}</span>
+                  )}
                 </div>
                 <div className="p-6">
                   <h3 className="text-xl font-semibold text-gray-800 mb-3">

@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion';
+
 const About = () => {
   return (
     <div className="min-h-screen bg-white py-20">
@@ -6,18 +8,62 @@ const About = () => {
           关于我们
         </h1>
         
-        <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
-          <div>
-            <h2 className="text-3xl font-semibold text-gray-800 mb-6">蓝博科技</h2>
-            <p className="text-gray-600 mb-6 leading-relaxed text-lg">
-              蓝博科技专注于智能化图书馆信息管理系统的研发与应用。我们致力于通过AI技术革新传统图书馆管理模式，
-              为图书馆提供高效、智能、人性化的管理解决方案。
-            </p>
-            <p className="text-gray-600 mb-6 leading-relaxed">
-              自成立以来，我们始终坚持技术创新，以用户需求为导向，不断完善产品功能，
-              已为全国数百家图书馆提供了专业的智能化管理服务。
-            </p>
-          </div>
+        <div className="grid md:grid-cols-2 gap-12 items-start mb-16">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.3,
+                  delayChildren: 0.2
+                }
+              }
+            }}
+          >
+            <motion.h2 
+              className="text-3xl font-semibold text-gray-800 mb-6"
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+              }}
+            >
+              蓝博科技
+            </motion.h2>
+            
+            <motion.p 
+              className="text-gray-600 mb-4 leading-relaxed text-lg text-left"
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+              }}
+            >
+              杭州蓝博计算机有限公司(下简称蓝博)始建于1999年6月，是一家专门从事计算机应用软件开发与研究的高科技公司。
+            </motion.p>
+            
+            <motion.p 
+              className="text-gray-600 mb-4 leading-relaxed text-lg text-left"
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+              }}
+            >
+              浙江省教育厅专门发了《关于在全省中小学推广使用"蓝博"中小学图书馆管理软件的通知》（浙教图(1999)03号）的文件来大力推广"蓝博"图书馆管理系统。
+            </motion.p>
+            
+            <motion.p 
+              className="text-gray-600 mb-6 leading-relaxed text-lg text-left"
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+              }}
+            >
+              公司本着"以人为本，创新至上"的管理理念，全面提高浙江省及省外各学校、企事业单位的图书馆管理水平。
+            </motion.p>
+          </motion.div>
           <div 
             className="h-96 rounded-lg bg-gray-100"
             style={{
