@@ -1,24 +1,14 @@
 
 import { Code, Cpu, Layers } from 'lucide-react'
 import { motion } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 const Hero = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
-    const [videoLoaded, setVideoLoaded] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
-        // Detect mobile device
-        const checkMobile = () => {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        };
-        setIsMobile(checkMobile());
-
         const video = videoRef.current;
         if (video) {
-            // Set video as loaded immediately to prioritize video
-            setVideoLoaded(true);
 
             // Add event listeners
             const handleCanPlay = () => {
