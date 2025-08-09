@@ -1,8 +1,25 @@
 
 import { Code, Cpu, Layers } from 'lucide-react'
 import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 
 const Hero = () => {
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        const video = videoRef.current;
+        if (video) {
+            // Try to play the video, handle autoplay restrictions
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(() => {
+                    // Autoplay was prevented, video will play after user interaction
+                    console.log('Video autoplay prevented on mobile');
+                });
+            }
+        }
+    }, []);
+
     const containerVariant = {
         hidden: {
             opacity: 0,
@@ -47,6 +64,7 @@ const Hero = () => {
             <div className="relative text-white h-[40vh] sm:h-[45vh] md:h-[500px] lg:h-[550px] xl:h-[600px] w-full overflow-hidden">
                 {/* Background Video */}
                 <video 
+                    ref={videoRef}
                     className="absolute inset-0 w-full h-full object-cover pointer-events-none"
                     autoPlay 
                     loop 
@@ -54,6 +72,7 @@ const Hero = () => {
                     playsInline
                     webkit-playsinline="true"
                     controls={false}
+                    preload="metadata"
                 >
                     <source src="/asset/library.mp4" type="video/mp4" />
                 </video>
