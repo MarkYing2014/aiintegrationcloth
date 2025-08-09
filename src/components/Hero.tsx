@@ -1,51 +1,60 @@
 
 import { Code, Cpu, Layers } from 'lucide-react'
 import { motion } from 'framer-motion';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const Hero = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
+    const [needsInteraction, setNeedsInteraction] = useState(false);
 
     useEffect(() => {
         const video = videoRef.current;
         if (video) {
-
-            // Add event listeners
-            const handleCanPlay = () => {
-                // Aggressively try to play the video
-                const playPromise = video.play();
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        console.log('Video playing successfully');
-                    }).catch((error) => {
-                        console.log('Video autoplay prevented:', error);
-                        // Try again after a short delay
-                        setTimeout(() => {
-                            video.play().catch(() => {
-                                console.log('Second attempt failed');
-                            });
-                        }, 100);
-                    });
+            const tryPlayVideo = async () => {
+                try {
+                    await video.play();
+                    console.log('Video playing successfully');
+                    setNeedsInteraction(false);
+                } catch (error) {
+                    console.log('Video autoplay prevented, needs user interaction');
+                    setNeedsInteraction(true);
                 }
             };
 
+            const handleCanPlay = () => {
+                tryPlayVideo();
+            };
+
             const handleLoadedData = () => {
-                handleCanPlay();
+                tryPlayVideo();
+            };
+
+            // Global click handler to enable video after any user interaction
+            const handleUserInteraction = () => {
+                if (needsInteraction) {
+                    tryPlayVideo();
+                }
             };
 
             // Try to play immediately
-            handleCanPlay();
+            tryPlayVideo();
 
             video.addEventListener('loadeddata', handleLoadedData);
             video.addEventListener('canplay', handleCanPlay);
+            
+            // Listen for any user interaction on the document
+            document.addEventListener('click', handleUserInteraction);
+            document.addEventListener('touchstart', handleUserInteraction);
 
             // Cleanup
             return () => {
                 video.removeEventListener('loadeddata', handleLoadedData);
                 video.removeEventListener('canplay', handleCanPlay);
+                document.removeEventListener('click', handleUserInteraction);
+                document.removeEventListener('touchstart', handleUserInteraction);
             };
         }
-    }, []);
+    }, [needsInteraction]);
 
     const containerVariant = {
         hidden: {
