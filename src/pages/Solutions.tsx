@@ -1,4 +1,37 @@
+import { motion } from 'framer-motion';
+
 const Solutions = () => {
+  const containerVariant = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3,
+        duration: 0.3,
+      },
+    },
+  };
+
+  const itemVariant = {
+    hidden: {
+      opacity: 0,
+      y: 30,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeInOut" as const,
+      },
+    },
+  };
+
   const solutions = [
     {
       title: "高校图书馆解决方案",
@@ -36,15 +69,30 @@ const Solutions = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-20">
+    <motion.div 
+      className="min-h-screen bg-gray-50 py-20"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariant}
+    >
       <div className="max-w-6xl mx-auto px-4">
-        <h1 className="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12">
+        <motion.h1 
+          className="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-12"
+          variants={itemVariant}
+        >
           蓝博方案
-        </h1>
+        </motion.h1>
         
-        <div className="space-y-12">
+        <motion.div 
+          className="space-y-12"
+          variants={containerVariant}
+        >
           {solutions.map((solution, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-lg p-8">
+            <motion.div 
+              key={index} 
+              className="bg-white rounded-lg shadow-lg p-8"
+              variants={itemVariant}
+            >
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div className={index % 2 === 0 ? "order-1" : "order-2"}>
                   <h2 className="text-2xl font-semibold text-gray-800 mb-4">
@@ -78,11 +126,14 @@ const Solutions = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        <div className="mt-16 bg-blue-100 rounded-lg p-8 text-center">
+        <motion.div 
+          className="mt-16 bg-blue-100 rounded-lg p-8 text-center"
+          variants={itemVariant}
+        >
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">定制化服务</h2>
           <p className="text-gray-600 mb-6 max-w-3xl mx-auto">
             我们理解每个图书馆都有其独特的需求和挑战。我们的专业团队将根据您的具体需求，
@@ -91,9 +142,9 @@ const Solutions = () => {
           <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition-colors">
             联系我们定制方案
           </button>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

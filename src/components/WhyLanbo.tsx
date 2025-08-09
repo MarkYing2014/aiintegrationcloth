@@ -17,12 +17,14 @@ const AnimationCounter = ({
     const [count, setCount] = useState(0);
     const countRef = useRef<HTMLDivElement>(null);
     const inView = useInView(countRef, {
-        once: true,
         margin: "-100px",
     });
     
     useEffect(() => {
-        if (!inView) return;
+        if (!inView) {
+            setCount(0); // Reset count when out of view
+            return;
+        }
         
         let startTime: number;
         let animationFrame: number;
@@ -97,7 +99,7 @@ const WhyLanbo = () => {
                                 <span className="text-2xl">🏆</span>
                             </div>
                             <AnimationCounter
-                                end={60}
+                                end={70}
                                 duration={2000}
                                 delay={500}
                             >
@@ -111,7 +113,7 @@ const WhyLanbo = () => {
                                 浙江省市场占有率
                             </h3>
                             <p className="text-gray-600 leading-relaxed">
-                                浙江省60%的中小学选择蓝博图书馆管理系统，获得教育厅官方推广认可
+                                浙江省70%的中小学选择蓝博图书馆管理系统，获得教育厅官方推广认可
                             </p>
                         </div>
                     </motion.div>

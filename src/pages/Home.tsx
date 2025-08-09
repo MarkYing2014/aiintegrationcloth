@@ -2,6 +2,7 @@ import Hero from '../components/Hero';
 import { Cpu } from 'lucide-react';
 import { motion } from 'framer-motion';
 import WhyLanbo from '@/components/WhyLanbo';
+import Testimonials from '@/components/Testimonials';
 
 const Home = () => {
   return (
@@ -232,6 +233,9 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Testimonials Section */}
+      <Testimonials />
     </>
   );
 };
