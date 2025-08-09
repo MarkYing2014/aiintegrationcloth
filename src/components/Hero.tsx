@@ -1,22 +1,45 @@
 
 import { Code, Cpu, Layers } from 'lucide-react'
 import { motion } from 'framer-motion';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const Hero = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
+    const [videoLoaded, setVideoLoaded] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
+        // Detect mobile device
+        const checkMobile = () => {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        };
+        setIsMobile(checkMobile());
+
         const video = videoRef.current;
         if (video) {
-            // Try to play the video, handle autoplay restrictions
-            const playPromise = video.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(() => {
-                    // Autoplay was prevented, video will play after user interaction
-                    console.log('Video autoplay prevented on mobile');
-                });
-            }
+            // Add event listeners
+            const handleLoadedData = () => {
+                setVideoLoaded(true);
+            };
+
+            const handleCanPlay = () => {
+                // Try to play the video
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(() => {
+                        console.log('Video autoplay prevented');
+                    });
+                }
+            };
+
+            video.addEventListener('loadeddata', handleLoadedData);
+            video.addEventListener('canplay', handleCanPlay);
+
+            // Cleanup
+            return () => {
+                video.removeEventListener('loadeddata', handleLoadedData);
+                video.removeEventListener('canplay', handleCanPlay);
+            };
         }
     }, []);
 
@@ -62,17 +85,28 @@ const Hero = () => {
             variants={containerVariant}
         >
             <div className="relative text-white h-[40vh] sm:h-[45vh] md:h-[500px] lg:h-[550px] xl:h-[600px] w-full overflow-hidden">
+                {/* Fallback Background Image for Mobile */}
+                {isMobile && !videoLoaded && (
+                    <div 
+                        className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+                        style={{
+                            backgroundImage: "linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/asset/lbpicture.jpeg')"
+                        }}
+                    />
+                )}
+                
                 {/* Background Video */}
                 <video 
                     ref={videoRef}
-                    className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+                    className={`absolute inset-0 w-full h-full object-cover pointer-events-none ${isMobile && !videoLoaded ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}
                     autoPlay 
                     loop 
                     muted
                     playsInline
                     webkit-playsinline="true"
                     controls={false}
-                    preload="metadata"
+                    preload="auto"
+                    poster="/asset/lbpicture.jpeg"
                 >
                     <source src="/asset/library.mp4" type="video/mp4" />
                 </video>
