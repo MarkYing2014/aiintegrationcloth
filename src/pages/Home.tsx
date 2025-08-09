@@ -1,6 +1,7 @@
 import Hero from '../components/Hero';
 import { Cpu } from 'lucide-react';
 import { motion } from 'framer-motion';
+import WhyLanbo from '@/components/WhyLanbo';
 
 const Home = () => {
   return (
@@ -118,6 +119,8 @@ const Home = () => {
         </div>
         </div>
       </section>
+
+      <WhyLanbo /> 
 
       {/* Products Section */}
       <section id="products" className="min-h-screen bg-gray-50 py-20">
