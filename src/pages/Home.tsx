@@ -71,7 +71,7 @@ const Home = () => {
               公司本着"以人为本，创新至上"的管理理念，全面提高浙江省及省外各学校、企事业单位的图书馆管理水平。
             </motion.p>
           </motion.div>
-          <div 
+          <motion.div 
             className="h-96 rounded-lg bg-gray-100"
             style={{
               backgroundImage: 'url(/asset/lbpicture.jpeg)',
@@ -80,12 +80,28 @@ const Home = () => {
               backgroundRepeat: 'no-repeat'
             }}
             title="蓝博科技公司形象"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={{
+              hidden: { opacity: 0, scale: 0.8, x: 50 },
+              visible: { 
+                opacity: 1, 
+                scale: 1, 
+                x: 0,
+                transition: { 
+                  duration: 0.8, 
+                  delay: 0.4,
+                  ease: "easeOut"
+                } 
+              }
+            }}
           >
             {/* Fallback content if background image doesn't load */}
             <div className="w-full h-full flex items-center justify-center text-gray-500">
               <span>蓝博科技</span>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 mb-16">

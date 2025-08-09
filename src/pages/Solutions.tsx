@@ -9,7 +9,7 @@ const Solutions = () => {
         "学术资源管理",
         "研究数据分析"
       ],
-      image: "🎓"
+      image: "/asset/University.jpeg"
     },
     {
       title: "公共图书馆解决方案",
@@ -20,7 +20,7 @@ const Solutions = () => {
         "活动管理系统",
         "社区服务功能"
       ],
-      image: "🏛️"
+      image: "/asset/PublicLib.jpeg"
     },
     {
       title: "企业图书馆解决方案",
@@ -31,7 +31,7 @@ const Solutions = () => {
         "知识库建设",
         "学习追踪系统"
       ],
-      image: "🏢"
+      image: "/asset/factory.jpeg"
     }
   ];
 
@@ -47,7 +47,6 @@ const Solutions = () => {
             <div key={index} className="bg-white rounded-lg shadow-lg p-8">
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div className={index % 2 === 0 ? "order-1" : "order-2"}>
-                  <div className="text-6xl mb-4">{solution.image}</div>
                   <h2 className="text-2xl font-semibold text-gray-800 mb-4">
                     {solution.title}
                   </h2>
@@ -70,8 +69,12 @@ const Solutions = () => {
                   </button>
                 </div>
                 <div className={index % 2 === 0 ? "order-2" : "order-1"}>
-                  <div className="h-64 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center">
-                    <span className="text-white text-8xl">{solution.image}</span>
+                  <div className="h-64 rounded-lg overflow-hidden shadow-lg">
+                    <img 
+                      src={solution.image} 
+                      alt={solution.title}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </div>
               </div>
