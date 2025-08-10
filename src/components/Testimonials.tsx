@@ -14,7 +14,7 @@ const Testimonials = () => {
       institution: "浙江大学",
       content: "蓝博图书馆管理系统极大地提升了我们的管理效率。多校区统一管理功能让我们能够轻松协调各个分馆的资源，学生反馈非常积极。",
       rating: 5,
-      avatar: "👨‍🏫"
+      avatar: "/asset/malelib.jpeg"
     },
     {
       id: 2,
@@ -23,7 +23,7 @@ const Testimonials = () => {
       institution: "桐乡高级中学",
       content: "系统的智能化程度很高，市民借阅体验得到显著改善。数据分析功能帮助我们更好地了解读者需求，优化馆藏结构。",
       rating: 5,
-      avatar: "👩‍💼"
+      avatar: "/asset/femalelib.jpeg"
     },
     {
       id: 3,
@@ -32,7 +32,7 @@ const Testimonials = () => {
       institution: "杭州第一中学",
       content: "作为中学图书馆，我们特别需要简单易用的系统。蓝博的解决方案完美满足了我们的需求，学生们很快就学会了使用。",
       rating: 5,
-      avatar: "👨‍🎓"
+      avatar: "/asset/malelib1.jpeg"
     },
     {
       id: 4,
@@ -41,7 +41,7 @@ const Testimonials = () => {
       institution: "台州市电力局",
       content: "企业内部知识管理一直是我们的重点。蓝博提供的企业图书馆解决方案帮助我们建立了完善的知识库，员工学习效率大幅提升。",
       rating: 5,
-      avatar: "👔"
+      avatar: "/asset/malelib2.jpeg"
     },
     {
       id: 5,
@@ -50,7 +50,7 @@ const Testimonials = () => {
       institution: "温州市图书馆",
       content: "25年的专业经验确实不是盖的！从系统设计到技术支持，蓝博团队都表现出了极高的专业水准。我们的数字化转型非常成功。",
       rating: 5,
-      avatar: "👩‍💻"
+      avatar: "/asset/femaleLib1.jpeg"
     },
     {
       id: 6,
@@ -59,7 +59,7 @@ const Testimonials = () => {
       institution: "宁波大学",
       content: "系统稳定性很好，几乎没有出现过故障。技术支持响应及时，解决问题效率很高。学生和教师都对新系统很满意。",
       rating: 5,
-      avatar: "👨‍💼"
+      avatar: "/asset/femaleLib2.jpeg"
     }
   ];
 
@@ -149,8 +149,20 @@ const Testimonials = () => {
 
                   {/* Customer Info */}
                   <div className="flex items-center">
-                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
-                      <span className="text-xl">{testimonial.avatar}</span>
+                    <div
+                      className={`w-12 h-12 rounded-full flex items-center justify-center mr-4 ${
+                        typeof testimonial.avatar === 'string' && testimonial.avatar.startsWith('/asset/') ? '' : 'bg-blue-100'
+                      }`}
+                    >
+                      {typeof testimonial.avatar === 'string' && testimonial.avatar.startsWith('/asset/') ? (
+                        <img
+                          src={testimonial.avatar}
+                          alt={testimonial.name}
+                          className="w-12 h-12 rounded-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-xl">{testimonial.avatar}</span>
+                      )}
                     </div>
                     <div>
                       <h4 className="font-semibold text-gray-800 text-sm">
