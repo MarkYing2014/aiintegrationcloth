@@ -10,8 +10,8 @@ const Testimonials = () => {
     {
       id: 1,
       name: "张教授",
-      title: "浙江大学图书馆馆长",
-      institution: "浙江大学",
+      title: "浙江工业大学法学院图书资料室主任",
+      institution: "浙江工业大学",
       content: "蓝博图书馆管理系统极大地提升了我们的管理效率。多校区统一管理功能让我们能够轻松协调各个分馆的资源，学生反馈非常积极。",
       rating: 5,
       avatar: "/asset/malelib.jpeg"
@@ -28,8 +28,8 @@ const Testimonials = () => {
     {
       id: 3,
       name: "顾老师",
-      title: "杭州第一中学图书馆馆长",
-      institution: "杭州第一中学",
+      title: "杭州西湖职业中学图书馆馆长",
+      institution: "杭州西湖职业中学",
       content: "作为中学图书馆，我们特别需要简单易用的系统。蓝博的解决方案完美满足了我们的需求，学生们很快就学会了使用。",
       rating: 5,
       avatar: "/asset/malelib1.jpeg"
@@ -37,26 +37,26 @@ const Testimonials = () => {
     {
       id: 4,
       name: "张经理",
-      title: "台州市电力局信息中心主任",
-      institution: "台州市电力局",
+      title: "台州市椒江区电力局信息中心主任",
+      institution: "台州市椒江区电力局",
       content: "企业内部知识管理一直是我们的重点。蓝博提供的企业图书馆解决方案帮助我们建立了完善的知识库，员工学习效率大幅提升。",
       rating: 5,
       avatar: "/asset/malelib2.jpeg"
     },
     {
       id: 5,
-      name: "张馆长",
-      title: "温州市图书馆馆长",
-      institution: "温州市图书馆",
+      name: "张主任",
+      title: "上海发电设备成套设计研究院有限公司资料室主任",
+      institution: "上海发电设备成套设计研究院有限公司",
       content: "25年的专业经验确实不是盖的！从系统设计到技术支持，蓝博团队都表现出了极高的专业水准。我们的数字化转型非常成功。",
       rating: 5,
       avatar: "/asset/femaleLib1.jpeg"
     },
     {
       id: 6,
-      name: "赵主任",
-      title: "宁波大学图书馆技术部主任",
-      institution: "宁波大学",
+      name: "赵老师",
+      title: "湖南省汉寿县第一中学图书馆馆长",
+      institution: "湖南省汉寿县第一中学",
       content: "系统稳定性很好，几乎没有出现过故障。技术支持响应及时，解决问题效率很高。学生和教师都对新系统很满意。",
       rating: 5,
       avatar: "/asset/femaleLib2.jpeg"
