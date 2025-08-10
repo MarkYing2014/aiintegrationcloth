@@ -1,10 +1,25 @@
 import { motion } from 'framer-motion';
-import { Star, Quote } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Star, Quote, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import type { TouchEvent } from 'react';
 
 const Testimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isInteracting, setIsInteracting] = useState(false);
+  const interactTimeout = useRef<number | null>(null);
+  const autoplayRef = useRef<number | null>(null);
+  const minSwipeDistance = 50;
+
+  // Cleanup interaction timeout on unmount
+  useEffect(() => {
+    return () => {
+      window.clearTimeout(interactTimeout.current || undefined);
+    };
+  }, []);
 
   const testimonials = [
     {
@@ -21,7 +36,7 @@ const Testimonials = () => {
       name: "严老师",
       title: "桐乡高级中学图书馆馆长",
       institution: "桐乡高级中学",
-      content: "系统的智能化程度很高，市民借阅体验得到显著改善。数据分析功能帮助我们更好地了解读者需求，优化馆藏结构。",
+      content: "系统的智能化程度很高，老师和学生借阅体验得到显著改善。数据分析功能帮助我们更好地了解读者需求，优化馆藏结构。",
       rating: 5,
       avatar: "/asset/femalelib.jpeg"
     },
@@ -63,18 +78,88 @@ const Testimonials = () => {
     }
   ];
 
-  // Auto-scroll carousel effect
+  // isMobile detection
   useEffect(() => {
-    if (!isHovered) {
-      const interval = setInterval(() => {
-        setCurrentIndex((prevIndex) => 
-          prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
-        );
-      }, 4000); // Change every 4 seconds
+    const mq = window.matchMedia('(max-width: 768px)');
+    const handler = () => setIsMobile(mq.matches);
+    handler();
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
-      return () => clearInterval(interval);
+
+  // Single-interval autoplay: advance only when allowed
+  useEffect(() => {
+    const start = () => {
+      if (autoplayRef.current != null) return;
+      autoplayRef.current = window.setInterval(() => {
+        if (!isInteracting && !document.hidden) {
+          setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+        }
+      }, 4000);
+    };
+    const stop = () => {
+      if (autoplayRef.current != null) {
+        window.clearInterval(autoplayRef.current);
+        autoplayRef.current = null;
+      }
+    };
+
+    start();
+
+    const handleVisibility = () => {
+      if (document.hidden) return; // interval keeps running but won't advance while hidden
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibility);
+      stop();
+    };
+  }, [isInteracting, testimonials.length]);
+
+  // Kickstart: advance once shortly after mount in case nothing triggers yet
+  useEffect(() => {
+    const t = window.setTimeout(() => {
+      if (!isInteracting && !document.hidden) {
+        setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+      }
+    }, 3000);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  // Touch handlers
+  const onTouchStart = (e: TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+    setIsInteracting(true);
+  };
+
+  const onTouchMove = (e: TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (touchStart === null || touchEnd === null) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    if (isLeftSwipe) {
+      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+    } else if (isRightSwipe) {
+      setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
     }
-  }, [isHovered, testimonials.length]);
+    // Resume autoplay shortly after touch ends
+    window.clearTimeout(interactTimeout.current || undefined);
+    interactTimeout.current = window.setTimeout(() => setIsInteracting(false), 2000);
+  };
+
+  const getCardAnimationClass = (index: number) => {
+    if (index === currentIndex) return 'scale-100 opacity-100 z-20';
+    if (index === (currentIndex + 1) % testimonials.length) return 'translate-x-[40%] scale-95 opacity-60 z-10';
+    if (index === (currentIndex - 1 + testimonials.length) % testimonials.length) return 'translate-x-[-40%] scale-95 opacity-60 z-10';
+    return 'scale-90 opacity-0';
+  };
 
 
 
@@ -107,91 +192,105 @@ const Testimonials = () => {
           </p>
         </motion.div>
 
-        {/* Carousel Container */}
-        <div 
-          className="relative overflow-hidden"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+        {/* Carousel Container (stacked cards) */}
+        <div
+          className="relative h-[420px] overflow-hidden"
+          // Don't pause on mere mouseenter; pause only while moving
+          onMouseLeave={() => { setIsInteracting(false); }}
+          onMouseMove={() => {
+            // Consider interaction only while the mouse is moving; auto-resume after inactivity
+            setIsInteracting(true);
+            window.clearTimeout(interactTimeout.current || undefined);
+            interactTimeout.current = window.setTimeout(() => setIsInteracting(false), 800);
+          }}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+          ref={carouselRef}
         >
-          <motion.div
-            className="flex transition-transform duration-1000 ease-in-out"
-            animate={{
-              x: `-${currentIndex * (100 / 3)}%`
-            }}
-            style={{
-              width: `${testimonials.length * (100 / 3)}%`
-            }}
-          >
-            {testimonials.map((testimonial) => (
-              <motion.div
+          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+            {testimonials.map((testimonial, index) => (
+              <div
                 key={testimonial.id}
-                className="w-1/3 flex-shrink-0 px-4"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, ease: "easeOut" as const }}
+                className={`absolute top-0 w-full max-w-sm transform transition-all duration-500 ${getCardAnimationClass(index)}`}
+                style={{ transitionDelay: `${index * 50}ms` }}
               >
-                <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 relative h-full">
-                  {/* Quote Icon */}
-                  <div className="absolute -top-4 -left-4 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                    <Quote className="w-4 h-4 text-white" />
-                  </div>
-
-                  {/* Rating */}
-                  <div className="flex items-center mb-4">
-                    {renderStars(testimonial.rating)}
-                  </div>
-
-                  {/* Content */}
-                  <p className="text-gray-700 mb-6 leading-relaxed text-sm">
-                    "{testimonial.content}"
-                  </p>
-
-                  {/* Customer Info */}
-                  <div className="flex items-center">
-                    <div
-                      className={`w-12 h-12 rounded-full flex items-center justify-center mr-4 ${
-                        typeof testimonial.avatar === 'string' && testimonial.avatar.startsWith('/asset/') ? '' : 'bg-blue-100'
-                      }`}
-                    >
-                      {typeof testimonial.avatar === 'string' && testimonial.avatar.startsWith('/asset/') ? (
-                        <img
-                          src={testimonial.avatar}
-                          alt={testimonial.name}
-                          className="w-12 h-12 rounded-full object-cover"
-                        />
-                      ) : (
-                        <span className="text-xl">{testimonial.avatar}</span>
-                      )}
+                <div className="overflow-hidden h-[360px] border border-gray-100 shadow-sm hover:shadow-md flex flex-col bg-white rounded-2xl">
+                  <div className="p-5 flex flex-col justify-between h-full relative">
+                    {/* Quote Icon */}
+                    <div className="absolute -top-4 -left-4 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                      <Quote className="w-4 h-4 text-white" />
                     </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-800 text-sm">
-                        {testimonial.name}
-                      </h4>
-                      <p className="text-gray-600 text-xs">
-                        {testimonial.title}
-                      </p>
-                      <p className="text-blue-600 text-xs font-medium">
-                        {testimonial.institution}
-                      </p>
+
+                    {/* Rating */}
+                    <div className="flex items-center mb-4">
+                      {renderStars(testimonial.rating)}
+                    </div>
+
+                    {/* Content */}
+                    <p className="text-gray-700 mb-2 leading-relaxed text-base">
+                      "{testimonial.content}"
+                    </p>
+
+                    {/* Customer Info */}
+                    <div className="flex items-center mt-4">
+                      <div
+                        className={`w-14 h-14 rounded-full flex items-center justify-center mr-4 ${
+                          typeof testimonial.avatar === 'string' && testimonial.avatar.startsWith('/asset/') ? '' : 'bg-blue-100'
+                        }`}
+                      >
+                        {typeof testimonial.avatar === 'string' && testimonial.avatar.startsWith('/asset/') ? (
+                          <img
+                            src={testimonial.avatar}
+                            alt={testimonial.name}
+                            className="w-14 h-14 rounded-full object-cover"
+                          />
+                        ) : (
+                          <span className="text-2xl">{testimonial.avatar}</span>
+                        )}
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-gray-800 text-base">{testimonial.name}</h4>
+                        <p className="text-gray-600 text-sm">{testimonial.title}</p>
+                        <p className="text-blue-600 text-sm font-medium">{testimonial.institution}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
 
-          {/* Carousel Indicators */}
-          <div className="flex justify-center mt-8 space-x-2">
-            {testimonials.map((_, index) => (
+          {/* Desktop arrows */}
+          {!isMobile && (
+            <>
               <button
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-                  index === currentIndex ? 'bg-blue-600' : 'bg-gray-300'
-                }`}
-              />
-            ))}
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 rounded-full flex items-center justify-center text-gray-500 hover:bg-white z-30 shadow-md transition-all duration-300 hover:scale-110"
+                onClick={() => setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length)}
+                aria-label="Previous testimonial"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 rounded-full flex items-center justify-center text-gray-500 hover:bg-white z-30 shadow-md transition-all duration-300 hover:scale-110"
+                onClick={() => setCurrentIndex((prev) => (prev + 1) % testimonials.length)}
+                aria-label="Next testimonial"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </>
+          )}
+
+          {/* Dots */}
+          <div className="absolute bottom-6 left-0 right-0 flex justify-center items-center space-x-3 z-30">
+            {testimonials.map((_, idx) => (
+              <button
+                key={idx}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${currentIndex === idx ? 'bg-gray-500 w-5' : 'bg-gray-200 hover:bg-gray-300'}`}
+                onClick={() => setCurrentIndex(idx)}
+                aria-label={`Go to testimonial ${idx + 1}`}
+              />)
+            )}
           </div>
         </div>
 

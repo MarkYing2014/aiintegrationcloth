@@ -10,8 +10,8 @@ const News = () => {
     },
     {
       date: "2024-08-05",
-      title: "与杭州第一中学达成战略合作",
-      summary: "将为杭州第一中学提供全面的智能化升级服务",
+      title: "与浙江省一级重点中学永康中学达成战略合作",
+      summary: "将为浙江永康中学提供全面的智能化升级服务",
       category: "合作新闻",
       image: "/asset/MiddleSchool.jpeg",
       bgColor: "from-green-200 to-blue-200"
