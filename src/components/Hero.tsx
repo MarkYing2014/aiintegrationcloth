@@ -117,7 +117,7 @@ const Hero = () => {
                 <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
                     <div className="grid md:grid-cols-2 gap-12 items-center w-full">
                         <motion.div variants={itemVariant}>
-                            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+                            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight md:whitespace-nowrap">
                                 蓝色科技，博识天下
                             </h1>
                             <p className="text-xl mb-6 opacity-90">
