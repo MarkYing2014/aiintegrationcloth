@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import logoIcon from '@/assets/react.svg';
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -101,7 +100,7 @@ const Navbar = () => {
               to="/"
               className="flex items-center space-x-3 text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors whitespace-nowrap"
             >
-              <img src={logoIcon} alt="Logo" className={cn("w-12 h-12 object-contain", isScrolled ? "w-10 h-10" : "w-12 h-12")} />
+              <img src="/asset/NewLBlogo.png" alt="Logo" className={cn("w-12 h-12 object-contain", isScrolled ? "w-10 h-10" : "w-12 h-12")} />
               <span className="whitespace-nowrap">蓝博科技</span>
             </Link>
           </div>
